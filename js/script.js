@@ -1,4 +1,6 @@
-'use strict';
+    'use strict';
+
+// const { data } = require("jquery");
 
 let cityID;
 let cuisine;
@@ -7,11 +9,38 @@ let cuisine;
 (function () {
     const restaurantOverlay = document.querySelector('.restaurant-overlay');
     const cityInput = document.getElementById('cityInput');
+    const currentCity = document.getElementById('currentCity')
     const submitButton = document.getElementById('submitButton');
+    const dataInput = document.getElementById('cityInput')
+    dataInput.addEventListener('keyup', ()=>{
+        const cityList = document.querySelector('.city-list');
+        const dataInput = document.getElementById('cityInput')
+        const dataList = document.getElementById('datalist')
+        let url = `https://developers.zomato.com/api/v2.1/cities?q=${dataInput.value}`;
+        fetchZomatoAPI(url)
+            .then((res) => {
+                console.log(res)
+                cityList.innerHTML = '';
+                console.log(res.location_suggestions);
+                res.location_suggestions.forEach((item) => {
+                    const opt = document.createElement('option')
+                    opt.value = item.name
+                    dataList.appendChild(opt)
+                })
+                currentCity.innerText = cityInput.value;
+                console.log(currentCity.innerText)
+                console.log("after",res.location_suggestions)
+                setCityId(res.location_suggestions[0].id)
+        })
+});
     submitButton.addEventListener('click', function (e) {
 
         e.preventDefault();
-        getListOfCities(cityInput.value);
+        document.getElementById('datalist').innerHTML = '';
+        const modalOverlay = document.querySelector('.modal-overlay');
+        modalOverlay.classList.toggle('open');
+        
+        //getListOfCities(cityInput.value);
     });
 
     const closeModal = document.getElementById('close-modal');
@@ -60,6 +89,9 @@ let cuisine;
             }
         });
     });
+    getRandomPicture();
+
+    // updateCityOptions();
 })()
 
 
@@ -79,6 +111,25 @@ function fetchZomatoAPI(url) {
     return fetchVar;
 }
 
+// function updateCityOptions(city) {
+//     const cityList = document.querySelector('.city-list');
+//     const dataInput = document.getElementById('cityInput')
+//     const dataList = document.getElementById('datalist')
+//     let url = `https://developers.zomato.com/api/v2.1/cities?q=${city}`;
+//     fetchZomatoAPI(url)
+//         .then((res) => {
+//             console.log(res)
+//             cityList.innerHTML = '';
+//             console.log(res.location_suggestions);
+//             res.location_suggestions.forEach((item) => {
+//                 dataInput.addEventListener('change', () => {
+//                     document.getElementById('datalist').innerHTML = '';
+//                     const opt = document.createElement('option')
+//                     opt.value = item.name
+//                     dataList.appendChild(opt)
+//                 })
+//             })
+
 
 function getListOfCities(city) {
     const modalOverlay = document.querySelector('.modal-overlay');
@@ -87,6 +138,7 @@ function getListOfCities(city) {
     let url = `https://developers.zomato.com/api/v2.1/cities?q=${city}`;
     fetchZomatoAPI(url)
         .then((res) => {
+            console.log(res)
             cityList.innerHTML = '';
             console.log(res.location_suggestions);
             res.location_suggestions.forEach((item) => {
@@ -102,6 +154,7 @@ function getListOfCities(city) {
             });
         })
 };
+
 
 function setCityId(id) {
     cityID = id;
@@ -199,19 +252,19 @@ function getEstablishmentsByCity(cityID, cuisine) {
 
 
 // Pexel API - Random pictures displayed on selection cards
-const pexelApiKey = '563492ad6f917000010000015b1b377af3ac48368c8dbfb885947855';
+
 
 
 function getRandomPicture() {
-    const pexelApiKey = '563492ad6f917000010000015b1b377af3ac48368c8dbfb885947855';
+    function randomNumber(arrLength) {
+        return Math.floor(Math.random() * arrLength);
+    }
+    const pixabayApiKey = '18162357-c76d0232909877bc4e71e2d3b';
     const foodImage = document.querySelectorAll('.food-image');
     foodImage.forEach(item => {
         let category = item.id;
-        let url = `https://api.pexels.com/v1/search?query=${category}&per_page=5`;
+        let url = `https://pixabay.com/api/?key=${pixabayApiKey}&q=${category}&image_type=photo&safesearch=true`;
         fetch(url, {
-            headers: {
-                'Authorization': pexelApiKey,
-            },
         })
             .then((res) => {
                 return res.json();
@@ -219,17 +272,27 @@ function getRandomPicture() {
             .then((data) => {
                 return data;
             })
-            .then((res) => {
-                console.log(res)
-                let sizedPhotos = res.photos.filter(item => {
-                    return item.width > item.height
-                });
-                let randomIndex = Math.floor(Math.random() * sizedPhotos.length);
-                let randomPhoto = sizedPhotos[randomIndex].src.medium;
-                item.setAttribute('src', randomPhoto)
+            .then((picObj) => {
+                
+                let randomPic = randomNumber(picObj.hits.length)
+                
+                let image = picObj.hits[randomPic].webformatURL
+                
+                item.setAttribute('src', image)
+                
             });
     })
 };
 
-//getRandomPicture();
+const cardHTML = `<div class="card" id="card">
 
+<div class="card-image">
+    <figure class="image is-4by3">
+        <img src=""
+            alt="burger" class="food-image" id="burger">
+    </figure>
+</div>
+<div class="card-content">
+    <a><strong> Burgers</strong></a>
+</div>
+</div>`
