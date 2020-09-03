@@ -1,7 +1,24 @@
-body {
 
+*, *:before, *:after {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+    box-sizing: border-box;
     background-image: url('../backgroundagainagain.jpg');
-    background-attachment: fixed;
+    background-size: cover;
+    margin: 0 auto;
+}
+
+body {
+    padding: 0;
+    background-image: url('../backgroundagainagain.jpg');
+    background-size: cover;
+    margin: 0 auto;
+    height: 100vh;
+    
+
 }
 
 .card-container {
@@ -11,18 +28,21 @@ body {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
-    margin: auto;
+    margin: 0 auto;
+    width: 100%;
     max-width: 1000px;
     padding-top: 15px;
     padding-bottom: 15px;
+
 }
 
 .card {
     margin: 10px;
     padding: 10px;
-    background-color: slategrey;
+    background-color: #6B9BB8;
     text-align: center;
     width: 300px;
+    height: 300px;
 }
 
 .card-content {
@@ -38,7 +58,7 @@ body {
 }
 
 .lead {
-    color: darkslategrey;
+    color: dark#6B9BB8;
     font-size: 23px;
 }
 
@@ -47,6 +67,8 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    /* background-color: rgba(245, 245, 245, .2) */
+
     
 }
 
@@ -59,11 +81,12 @@ body {
     z-index: 9999;
     font-family: monospace;
     width: 940px;
+    background-color: rgba(245, 245, 245, .6);
     
 
 
-    /* max-width: 800px;
-    justify-content: center; */
+    max-width: 800px;
+    justify-content: center;
     
 }
 
@@ -76,7 +99,7 @@ body {
 
 .header {
     display: flex;
-    background-color: lightslategrey;
+    background-color: light#6B9BB8;
     font-size: 27px;
     color: whitesmoke;
     text-align: center;
@@ -84,9 +107,17 @@ body {
 }
 
 .header a {
-    font-size: 12px;
+    font-size: 16px;
     margin: auto 0px auto 5px;
-    color: white;
+    color: #6B9BB8;
+}
+.display-4 {
+    color: #efefef;
+    /* background-color: rgba(245, 245, 245, .7) */
+
+}
+strong {
+    color: #363636;
 }
 
 .modal-overlay {
@@ -193,26 +224,59 @@ body {
 }
 
 footer {
-    background-color: #efefefdb;
+    background-color: #90B2C5;
+    color: #efefef;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
 }
 
-footer h2 {
+footer h1 {
+    font-family: monospace;
     text-align: center;
     font-size: 2rem;
     padding-top: 10px;
+    color: #efefef;
 }
+
+
 
 h3 {
     padding: 20px 20px;
+    font-family: monospace;
 }
 
 h3 a {
-    color: black;
+    color: #efefef;
 }
+
+h3 a:hover {
+    color: white;
+    text-decoration: none;
+}
+
+h3 a:visited {
+    color: #efefef;
+    text-decoration: none;
+}
+
+
 
 .members {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
+}
+
+
+@media screen and (min-width: 320px) {
+    footer {
+        bottom: 0;
+        position: fixed;
+    }
+
+    .card-container {
+    margin-bottom: 16px;
+    }
 }
 
 
